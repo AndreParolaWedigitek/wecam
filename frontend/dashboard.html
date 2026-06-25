@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>we:cam</title>
+
+<link rel="preconnect"
+href="https://fonts.googleapis.com">
+
+<link rel="preconnect"
+href="https://fonts.gstatic.com"
+crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&family=Poppins:wght@300;400;500;600&display=swap"
+rel="stylesheet">
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+rel="stylesheet">
+
+<link rel="stylesheet"
+href="css/style.css">
+<link rel="stylesheet"
+href="css/override.css">
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+</head>
+
+<body class="has-topbar">
+
+<div class="container-fluid">
+
+<div class="topbar d-flex align-items-center">
+	<div class="topbar-left d-flex align-items-center">
+		<img src="src/wecam.png" alt="WeCam" width="140" height="140" class="rounded-circle me-3" style="object-fit: contain;">
+	</div>
+
+	<div class="topbar-center flex-grow-1 d-flex justify-content-center">
+		<nav class="nav">
+			<a class="nav-link" href="#dashboardTop">Deteções</a>
+			<a class="nav-link" href="#usersList">Registos</a>
+			<a class="nav-link" href="#cameraSection">Deteções</a>
+			<a class="nav-link" href="#latestDetectionsSection">Definições</a>
+		</nav>
+	</div>
+
+	<div class="topbar-right d-flex align-items-center">
+		<!-- Atualizar button moved below specific sections -->
+	</div>
+</div>
+
+<div class="row mt-4">
+	<div class="col-12 content">
+
+<div class="d-flex justify-content-between align-items-center mb-4 section-anchor" id="dashboardTop">
+<h2>Deteções</h2>
+</div>
+
+<div class="row g-4 section-anchor" id="usersSection">
+
+<div class="col-md-3">
+
+<div class="card stat-card">
+
+<h5>Total</h5>
+
+<h2 id="totalDetections">
+0
+</h2>
+
+</div>
+
+</div>
+
+<div class="col-md-3">
+
+<div class="card stat-card">
+
+<h5>Pessoas</h5>
+
+<h2 id="totalUsers">
+0
+</h2>
+
+</div>
+
+</div>
+
+<div class="col-md-3">
+
+<div class="card stat-card">
+
+<h5>Hoje</h5>
+
+<h2 id="todayDetections">
+0
+</h2>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="card mt-4 p-4 section-anchor" id="cameraSection">
+
+<h4>Câmera</h4>
+
+<img
+src="http://127.0.0.1:8000/video_feed"
+width="100%"
+class="img-fluid"
+>
+
+</div>
+
+<div class="card mt-4 p-4">
+
+<h4>Deteções por Pessoa</h4>
+
+<canvas id="detectionsChart"></canvas>
+
+    <div class="d-flex justify-content-end mt-3">
+        <button class="update-btn" onclick="reloadDashboard()" aria-label="Atualizar">
+            <img src="src/f5.png" alt="">
+        </button>
+    </div>
+
+</div>
+
+<div class="card mt-4 p-4 section-anchor" id="latestDetectionsSection">
+
+<h4>Últimas Deteções</h4>
+
+<table class="table">
+
+<thead>
+
+<tr>
+
+<th>Pessoa</th>
+<th>Hora</th>
+<th style="width:90px"></th>
+
+</tr>
+
+</thead>
+
+<tbody id="detectionsTable">
+
+</tbody>
+
+</table>
+
+    <div class="d-flex justify-content-center align-items-center mt-3 pagination-row">
+        <div id="detectionsPageButtons" class="d-flex gap-2"></div>
+        <button class="update-btn reload-page-btn" onclick="reloadDashboard()" aria-label="Atualizar">
+            <img src="src/f5.png" alt="">
+        </button>
+    </div>
+
+</div>
+
+<hr />
+
+<h2 class="mt-4">Registar</h2>
+
+<div class="card p-4">
+
+<h4>Registar</h4>
+
+<div class="mb-3">
+	<label class="form-label">Nome</label>
+	<input type="text" id="registerName" class="form-control" placeholder="Introduza o nome">
+</div>
+
+<div class="mb-3">
+	<label class="form-label">Email</label>
+	<input type="email" id="registerEmail" class="form-control" placeholder="Introduza o email">
+</div>
+
+<div class="mb-3">
+	<label class="form-label">Password</label>
+	<input type="password" id="registerPassword" class="form-control" placeholder="Introduza a password">
+</div>
+
+<h5>Câmera</h5>
+
+<img src="http://127.0.0.1:8000/video_feed" width="100%" class="border rounded" id="registerVideo">
+
+<div class="mt-4">
+    <div class="d-flex gap-2">
+        <button class="update-btn" type="button" onclick="showConfirm('Deseja registar?', 'registerUser')" aria-label="Registar Utilizador">
+            <img src="src/+.png" alt="+">
+        </button>
+        <button class="update-btn clear-btn" type="button" onclick="showConfirm('Deseja cancelar? Esta ação não pode ser desfeita.', 'cancelRegister')" aria-label="Limpar Campos">
+            <img src="src/x.png" alt="x">
+        </button>
+    </div>
+</div>
+
+<div id="registerResult" class="mt-3"></div>
+
+</div>
+
+<div id="usersList" class="mt-4">
+
+<div class="card p-4">
+
+<h4>Registos</h4>
+
+<table class="table mb-0">
+<thead>
+<tr>
+<th>Nome</th>
+<th style="width:90px"></th>
+</tr>
+</thead>
+<tbody id="usersTable"></tbody>
+</table>
+
+    <div class="d-flex justify-content-center align-items-center mt-3 pagination-row">
+        <div id="usersPageButtons" class="d-flex gap-2"></div>
+        <button class="update-btn reload-page-btn" onclick="reloadDashboard()" aria-label="Atualizar">
+            <img src="src/f5.png" alt="">
+        </button>
+    </div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<script src="js/dashboard.js"></script>
+
+<!-- Loading overlay -->
+<div id="loadingOverlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.4);z-index:1999;transition:background 0.3s ease;"></div>
+
+<!-- Photo modal -->
+<div id="photoModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.65);align-items:center;justify-content:center;z-index:2000;">
+  <div style="position:relative;max-width:92%;max-height:92%;">
+    <img id="photoModalImg" src="" alt="" style="display:block;width:100%;height:100%;object-fit:contain;border-radius:8px;">
+  </div>
+</div>
+
+<!-- Confirmation modal (sub-page style) -->
+<div id="confirmModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.65);align-items:center;justify-content:center;z-index:2001;">
+    <div style="background:white;padding:18px;border-radius:12px;min-width:280px;max-width:92%;">
+        <h5 style="margin:0 0 8px 0;color:#333;">Confirmar</h5>
+        <p id="confirmMessage" style="margin:0 0 12px 0;color:#444;">Tem a certeza?</p>
+        <div class="d-flex justify-content-end gap-2">
+            <button class="btn btn-secondary" id="confirmCancelBtn">Cancelar</button>
+            <button class="btn btn-primary" id="confirmOkBtn">Continuar</button>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

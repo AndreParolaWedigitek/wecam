@@ -1,0 +1,93 @@
+/* Override styles for update buttons and pagination */
+.update-btn{
+    width:44px !important;
+    height:44px !important;
+}
+.update-btn img{
+    width:22px !important;
+    height:22px !important;
+}
+.pagination-container{
+    gap: 12px;
+    flex-wrap: wrap;
+}
+.pager-btn{
+    min-width:40px;
+    height:40px;
+    border:none;
+    border-radius:12px;
+    background:#1f46ff;
+    color:white;
+    font-size:16px;
+    cursor:pointer;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    padding:0 12px;
+    box-shadow: 0 6px 16px rgba(31,70,255,0.16);
+}
+.pager-btn:disabled{
+    opacity:0.5;
+    cursor:not-allowed;
+}
+.page-number-btn{
+    min-width:36px;
+    height:36px;
+    border:none;
+    border-radius:12px;
+    background:#eef2ff;
+    color:#1f46ff;
+    cursor:pointer;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    padding:0 10px;
+}
+.page-number-btn.active{
+    background:#1f46ff;
+    color:white;
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes modalOpen {
+    from {
+        opacity: 0;
+        transform: translateY(-18px) scale(0.94);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.animate-fade-in {
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+.animate-fade-in-slow {
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+#confirmModal > div {
+    transition: transform 0.24s ease, opacity 0.24s ease;
+}
+
+.confirm-open > div {
+    animation: modalOpen 0.24s ease-out;
+}
+
+/* red clear button matching update-btn size but in red */
+.clear-btn{
+    background: #ff3b30 !important;
+    box-shadow: 0 6px 16px rgba(255,59,48,0.16);
+}
+.clear-btn img{ width:20px !important; height:20px !important; }
