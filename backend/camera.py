@@ -240,10 +240,8 @@ def generate_frames():
                 dash_length = 36
                 gap_length = 18
 
-                # draw a single dash centered on each straight side
                 def draw_single_side_dash():
                     half = dash_length // 2
-                    # top/bottom horizontal dash
                     left = x1 + corner_radius
                     right = x2 - corner_radius
                     cx = (left + right) // 2
@@ -252,7 +250,6 @@ def generate_frames():
                     cv2.line(frame, (x_start, y1), (x_end, y1), color, thickness, cv2.LINE_AA)
                     cv2.line(frame, (x_start, y2), (x_end, y2), color, thickness, cv2.LINE_AA)
 
-                    # left/right vertical dash
                     top = y1 + corner_radius
                     bottom = y2 - corner_radius
                     cy = (top + bottom) // 2
@@ -261,27 +258,19 @@ def generate_frames():
                     cv2.line(frame, (x1, y_start), (x1, y_end), color, thickness, cv2.LINE_AA)
                     cv2.line(frame, (x2, y_start), (x2, y_end), color, thickness, cv2.LINE_AA)
 
-                # draw a single small arc segment at each corner
                 def draw_single_corner_arcs():
-                    # compute arc span so arc length ~ dash_length (arc_length = radius * angle_rad)
-                    # angle_rad = dash_length / corner_radius -> degrees = angle_rad * 180/pi
                     arc_span = int((dash_length / max(1, corner_radius)) * 180.0 / math.pi)
                     arc_span = max(4, min(90, arc_span))
-                    # center each arc within the 90deg corner
                     half_gap = (90 - arc_span) / 2.0
-                    # top-left (180..270) centered segment
                     start = int(180 + half_gap)
                     end = int(start + arc_span)
                     cv2.ellipse(frame, (x1 + corner_radius, y1 + corner_radius), (corner_radius, corner_radius), 0, start, end, color, thickness, cv2.LINE_AA)
-                    # top-right (270..360)
                     start = int(270 + half_gap)
                     end = int(start + arc_span)
                     cv2.ellipse(frame, (x2 - corner_radius, y1 + corner_radius), (corner_radius, corner_radius), 0, start, end, color, thickness, cv2.LINE_AA)
-                    # bottom-right (0..90)
                     start = int(0 + half_gap)
                     end = int(start + arc_span)
                     cv2.ellipse(frame, (x2 - corner_radius, y2 - corner_radius), (corner_radius, corner_radius), 0, start, end, color, thickness, cv2.LINE_AA)
-                    # bottom-left (90..180)
                     start = int(90 + half_gap)
                     end = int(start + arc_span)
                     cv2.ellipse(frame, (x1 + corner_radius, y2 - corner_radius), (corner_radius, corner_radius), 0, start, end, color, thickness, cv2.LINE_AA)
@@ -290,15 +279,12 @@ def generate_frames():
                 draw_single_corner_arcs()
 
                 label = f"{best_name}"
-                # small upward offset so the label sits slightly above the box
                 y_offset = 22
 
-                # Try to render text with Montserrat using Pillow (if available and font file present).
                 try:
                     from PIL import Image, ImageDraw, ImageFont
                     import os
 
-                    # candidate font paths - project fonts or system paths
                     candidates = [
                         os.path.join('frontend', 'src', 'Montserrat-Regular.ttf'),
                         os.path.join('frontend', 'src', 'Montserrat.ttf'),
@@ -316,7 +302,6 @@ def generate_frames():
                             font_path = p
                             break
 
-                    # default font size approximated to previous scale
                     font_size = max(16, int((y2 - y1) * 0.08))
 
                     if font_path:
@@ -326,16 +311,12 @@ def generate_frames():
                         text_w, text_h = draw.textsize(label, font=font)
                         text_x = x1 + ((x2 - x1) - text_w) // 2
                         text_y = max(int(y1 - y_offset), 0)
-                        # draw text with slight outline for readability
                         outline_color = (0, 0, 0)
-                        # draw outline
                         for ox, oy in [(-1, -1), (-1, 1), (1, -1), (1, 1)]:
                             draw.text((text_x + ox, text_y + oy), label, font=font, fill=outline_color)
-                        # main text in white
                         draw.text((text_x, text_y), label, font=font, fill=(255, 255, 255))
                         frame = cv2.cvtColor(np.array(img), cv2.COLOR_RGB2BGR)
                     else:
-                        # fallback to OpenCV text if Montserrat not found
                         font_scale = 1
                         text_thickness = 2
                         (text_w, text_h), _ = cv2.getTextSize(label, cv2.FONT_HERSHEY_SIMPLEX, font_scale, text_thickness)
@@ -352,7 +333,6 @@ def generate_frames():
                             cv2.LINE_AA
                         )
                 except Exception:
-                    # if Pillow not available or any error, fallback to OpenCV text
                     font_scale = 1
                     text_thickness = 2
                     (text_w, text_h), _ = cv2.getTextSize(label, cv2.FONT_HERSHEY_SIMPLEX, font_scale, text_thickness)
