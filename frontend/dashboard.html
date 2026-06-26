@@ -42,15 +42,12 @@ href="css/override.css">
 
 	<div class="topbar-center flex-grow-1 d-flex justify-content-center">
 		<nav class="nav">
-			<a class="nav-link" href="#dashboardTop">Deteções</a>
+    		<a class="nav-link" href="#cameraSection">Deteções</a>
 			<a class="nav-link" href="#usersList">Registos</a>
-			<a class="nav-link" href="#cameraSection">Deteções</a>
-			<a class="nav-link" href="#latestDetectionsSection">Definições</a>
 		</nav>
 	</div>
 
 	<div class="topbar-right d-flex align-items-center">
-		<!-- Atualizar button moved below specific sections -->
 	</div>
 </div>
 
@@ -241,17 +238,15 @@ class="img-fluid"
 
 <script src="js/dashboard.js"></script>
 
-<!-- Loading overlay -->
 <div id="loadingOverlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.4);z-index:1999;transition:background 0.3s ease;"></div>
 
-<!-- Photo modal -->
+
 <div id="photoModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.65);align-items:center;justify-content:center;z-index:2000;">
   <div style="position:relative;max-width:92%;max-height:92%;">
     <img id="photoModalImg" src="" alt="" style="display:block;width:100%;height:100%;object-fit:contain;border-radius:8px;">
   </div>
 </div>
 
-<!-- Confirmation modal (sub-page style) -->
 <div id="confirmModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.65);align-items:center;justify-content:center;z-index:2001;">
     <div style="background:white;padding:18px;border-radius:12px;min-width:280px;max-width:92%;">
         <h5 style="margin:0 0 8px 0;color:#333;">Confirmar</h5>

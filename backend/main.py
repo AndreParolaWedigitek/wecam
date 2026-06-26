@@ -224,6 +224,9 @@ def summary():
 
     total_detections = 0
     total_users = 0
+    today_detections = 0
+
+    hoje = datetime.now().date()
 
     for doc_id in db:
 
@@ -233,15 +236,26 @@ def summary():
 
             total_detections += 1
 
+            timestamp = doc.get("timestamp")
+
+            if timestamp:
+                try:
+                    data = datetime.fromisoformat(timestamp)
+
+                    if data.date() == hoje:
+                        today_detections += 1
+
+                except Exception:
+                    pass
+
         elif doc.get("type") == "user":
 
             total_users += 1
 
     return {
-
         "totalDetections": total_detections,
-        "totalUsers": total_users
-
+        "totalUsers": total_users,
+        "todayDetections": today_detections
     }
 
 @app.get("/latest")

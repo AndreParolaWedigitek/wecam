@@ -209,14 +209,12 @@ async function registerUser(){
             result.innerHTML = `<div class="alert alert-info">${data.message}</div>`;
         }
 
-        // Clear form fields if successful
         if(data.success){
             if(nameInput) nameInput.value = '';
             if(emailInput) emailInput.value = '';
             if(passwordInput) passwordInput.value = '';
         }
 
-        // reload users to reflect new registration (if successful)
         await loadUsers();
     }catch(e){
         console.error('Erro ao registar utilizador', e);
@@ -244,7 +242,6 @@ function cancelRegister(){
     }
 }
 
-// Confirmation modal helper
 let __pendingConfirmAction = null;
 
 function showConfirm(message, actionName){
@@ -319,7 +316,6 @@ function renderDetectionsPage(){
         `;
     });
 
-    // Add click listeners to images after rendering
     pageItems.forEach((item, idx) => {
         if(item.photo){
             const imgId = `det-photo-${startIndex + idx}`;
@@ -399,9 +395,6 @@ function changeDetectionsPage(delta){
 }
 
 function updateActiveNav(){
-    // Use nav order and viewport center to determine active section. Prefer
-    // the section whose bounding rect contains the viewport center; otherwise
-    // pick the section closest to the center.
     const navLinks = Array.from(document.querySelectorAll('.topbar .nav-link'));
     const sections = navLinks.map(l => {
         const sel = l.getAttribute('href');
@@ -410,7 +403,6 @@ function updateActiveNav(){
     }).filter(Boolean);
 
     const centerY = window.innerHeight / 2;
-    // Choose the section with the largest visible overlap in the viewport.
     let activeSection = null;
     let maxVisible = -1;
 
@@ -444,10 +436,10 @@ async function reloadDashboard(){
     overlay.classList.add('animate-fade-in-slow');
     
     try {
+        await loadSummary();
         await loadStats();
         await loadDetections();
         await loadUsers();
-        // ensure nav highlight updates after content changes
         updateActiveNav();
     } finally {
         overlay.classList.remove('animate-fade-in-slow');
@@ -463,9 +455,10 @@ window.addEventListener('load', () => {
 window.addEventListener('resize', updateActiveNav);
 
 document.addEventListener('DOMContentLoaded', () => {
+    loadSummary();
     reloadDashboard();
-    // Auto-refresh detections every 5 minutes
     setInterval(async () => {
+        await loadSummary();
         await loadDetections();
         await loadStats();
         updateActiveNav();
@@ -495,7 +488,16 @@ function closePhotoModal(){
   document.body.style.overflow = '';
 }
 
-// close on Escape
+async function loadSummary(){
+
+    const response = await fetch("http://127.0.0.1:8000/summary");
+    const data = await response.json();
+
+    document.getElementById("totalDetections").innerText = data.totalDetections;
+    document.getElementById("totalUsers").innerText = data.totalUsers;
+    document.getElementById("todayDetections").innerText = data.todayDetections;
+}
+
 document.addEventListener('keydown', (e) => {
   if(e.key === 'Escape') closePhotoModal();
 });
