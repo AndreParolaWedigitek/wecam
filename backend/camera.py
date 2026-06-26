@@ -242,7 +242,6 @@ def generate_frames():
 
                 def draw_single_side_dash():
                     half = dash_length // 2
-                    # top/bottom horizontal dash
                     left = x1 + corner_radius
                     right = x2 - corner_radius
                     cx = (left + right) // 2

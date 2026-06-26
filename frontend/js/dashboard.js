@@ -472,7 +472,6 @@ function openPhotoModal(src){
   img.src = src;
   modal.style.display = 'flex';
   modal.classList.add('animate-fade-in');
-  // click outside to close
   modal.onclick = (e) => { if(e.target === modal) closePhotoModal(); };
   document.body.style.overflow = 'hidden';
 }
@@ -488,6 +487,7 @@ function closePhotoModal(){
   document.body.style.overflow = '';
 }
 
+<<<<<<< HEAD
 async function loadSummary(){
 
     const response = await fetch("http://127.0.0.1:8000/summary");
@@ -498,6 +498,8 @@ async function loadSummary(){
     document.getElementById("todayDetections").innerText = data.todayDetections;
 }
 
+=======
+>>>>>>> 1808cc93d0873cc380793280fff889590e9a24d2
 document.addEventListener('keydown', (e) => {
   if(e.key === 'Escape') closePhotoModal();
 });
