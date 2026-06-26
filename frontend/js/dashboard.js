@@ -209,14 +209,12 @@ async function registerUser(){
             result.innerHTML = `<div class="alert alert-info">${data.message}</div>`;
         }
 
-        // Clear form fields if successful
         if(data.success){
             if(nameInput) nameInput.value = '';
             if(emailInput) emailInput.value = '';
             if(passwordInput) passwordInput.value = '';
         }
 
-        // reload users to reflect new registration (if successful)
         await loadUsers();
     }catch(e){
         console.error('Erro ao registar utilizador', e);
@@ -244,7 +242,6 @@ function cancelRegister(){
     }
 }
 
-// Confirmation modal helper
 let __pendingConfirmAction = null;
 
 function showConfirm(message, actionName){
@@ -319,7 +316,6 @@ function renderDetectionsPage(){
         `;
     });
 
-    // Add click listeners to images after rendering
     pageItems.forEach((item, idx) => {
         if(item.photo){
             const imgId = `det-photo-${startIndex + idx}`;
@@ -399,9 +395,6 @@ function changeDetectionsPage(delta){
 }
 
 function updateActiveNav(){
-    // Use nav order and viewport center to determine active section. Prefer
-    // the section whose bounding rect contains the viewport center; otherwise
-    // pick the section closest to the center.
     const navLinks = Array.from(document.querySelectorAll('.topbar .nav-link'));
     const sections = navLinks.map(l => {
         const sel = l.getAttribute('href');
@@ -410,7 +403,6 @@ function updateActiveNav(){
     }).filter(Boolean);
 
     const centerY = window.innerHeight / 2;
-    // Choose the section with the largest visible overlap in the viewport.
     let activeSection = null;
     let maxVisible = -1;
 
@@ -447,7 +439,6 @@ async function reloadDashboard(){
         await loadStats();
         await loadDetections();
         await loadUsers();
-        // ensure nav highlight updates after content changes
         updateActiveNav();
     } finally {
         overlay.classList.remove('animate-fade-in-slow');
@@ -464,7 +455,6 @@ window.addEventListener('resize', updateActiveNav);
 
 document.addEventListener('DOMContentLoaded', () => {
     reloadDashboard();
-    // Auto-refresh detections every 5 minutes
     setInterval(async () => {
         await loadDetections();
         await loadStats();
@@ -479,7 +469,6 @@ function openPhotoModal(src){
   img.src = src;
   modal.style.display = 'flex';
   modal.classList.add('animate-fade-in');
-  // click outside to close
   modal.onclick = (e) => { if(e.target === modal) closePhotoModal(); };
   document.body.style.overflow = 'hidden';
 }
@@ -495,7 +484,6 @@ function closePhotoModal(){
   document.body.style.overflow = '';
 }
 
-// close on Escape
 document.addEventListener('keydown', (e) => {
   if(e.key === 'Escape') closePhotoModal();
 });
