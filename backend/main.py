@@ -106,7 +106,6 @@ def capture_user(name: str, user_data: UserRegistration):
 
         }
 
-        # encode frame to JPEG and save as base64 string inside document
         ret, buf = cv2.imencode('.jpg', frame, [int(cv2.IMWRITE_JPEG_QUALITY), 80])
         if ret:
             photo_b64 = base64.b64encode(buf.tobytes()).decode('ascii')
@@ -155,7 +154,6 @@ def add_detection(person: str):
 
     }
 
-    # encode current frame as JPEG and save as base64
     if camera.last_frame is not None:
         ret, buf = cv2.imencode('.jpg', camera.last_frame, [int(cv2.IMWRITE_JPEG_QUALITY), 80])
         if ret:
